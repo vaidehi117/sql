@@ -22,3 +22,4 @@ VALUES
 ('taylor@guitarshop.com',
 SHA2('myL0ngP@ssword', 256), 'Taylor', 'Swift');
 
+
