@@ -8,6 +8,9 @@ include("item.php");
 
 <head>
     <title>Inventory Helper</title>
+    <link rel="stylesheet" type="text/css" href="ih_styles.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+
 </head>
 
 <body>
