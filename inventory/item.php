@@ -41,70 +41,94 @@ class Item
         return $result;
     }
     static function getItems()
-   {
-       $db = getDB();
-       $query = "SELECT * FROM items";
-       $result = $db->query($query);
-       if (mysqli_num_rows($result) > 0) {
-           $items = array();
-           while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-               $item = new Item(
-                   $row['itemID'],
-                   $row['itemName'],
-                   $row['categoryID'],
-                   $row['listPrice']
-               );
-               array_push($items, $item);
-           }
-           $db->close();
-           return $items;
-       } else {
-           $db->close();
-           return NULL;
-       }
-   }
-   static function findItem($itemID)
-   {
-       $db = getDB();
-       $query = "SELECT * FROM items WHERE itemID = $itemID";
-       $result = $db->query($query);
-       $row = $result->fetch_array(MYSQLI_ASSOC);
-       if ($row) {
-           $item = new Item(
-               $row['itemID'],
-               $row['itemName'],
-               $row['categoryID'],
-               $row['listPrice']
-           );
-           $db->close();
-           return $item;
-       } else {
-           $db->close();
-           return NULL;
-       }
-   }
-   function updateItem()
-   {
-       $db = getDB();
-       $query = "UPDATE items SET itemName= ?, " .
-           "categoryID= ?, listPrice= ? WHERE itemID = $this->itemID";
-       $stmt = $db->prepare($query);
-       $stmt->bind_param(
-           "sid",
-           $this->itemName,
-           $this->categoryID,
-           $this->listPrice
-       );
-       $result = $stmt->execute();
-       $db->close();
-       return $result;
-   }
-   function removeItem()
-   {
-       $db = getDB();
-       $query = "DELETE FROM items WHERE itemID = $this->itemID";
-       $result = $db->query($query);
-       $db->close();
-       return $result;
-   }
+    {
+        $db = getDB();
+        $query = "SELECT * FROM items";
+        $result = $db->query($query);
+        if (mysqli_num_rows($result) > 0) {
+            $items = array();
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                $item = new Item(
+                    $row['itemID'],
+                    $row['itemName'],
+                    $row['categoryID'],
+                    $row['listPrice']
+                );
+                array_push($items, $item);
+            }
+            $db->close();
+            return $items;
+        } else {
+            $db->close();
+            return NULL;
+        }
+    }
+    static function findItem($itemID)
+    {
+        $db = getDB();
+        $query = "SELECT * FROM items WHERE itemID = $itemID";
+        $result = $db->query($query);
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        if ($row) {
+            $item = new Item(
+                $row['itemID'],
+                $row['itemName'],
+                $row['categoryID'],
+                $row['listPrice']
+            );
+            $db->close();
+            return $item;
+        } else {
+            $db->close();
+            return NULL;
+        }
+    }
+    function updateItem()
+    {
+        $db = getDB();
+        $query = "UPDATE items SET itemName= ?, " .
+            "categoryID= ?, listPrice= ? WHERE itemID = $this->itemID";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param(
+            "sid",
+            $this->itemName,
+            $this->categoryID,
+            $this->listPrice
+        );
+        $result = $stmt->execute();
+        $db->close();
+        return $result;
+    }
+    function removeItem()
+    {
+        $db = getDB();
+        $query = "DELETE FROM items WHERE itemID = $this->itemID";
+        $result = $db->query($query);
+        $db->close();
+        return $result;
+    }
+    static function getTotalItems()
+    {
+        $db = getDB();
+        $query = "SELECT count(itemID) FROM items";
+        $result = $db->query($query);
+        $row = $result->fetch_array();
+        if ($row) {
+            return $row[0];
+        } else {
+            return NULL;
+        }
+    }
+    static function getTotalListPrice()
+    {
+        $db = getDB();
+        $query = "SELECT sum(listPrice) FROM items";
+        $result = $db->query($query);
+        $row = $result->fetch_array();
+        if ($row) {
+            return $row[0];
+        } else {
+            return NULL;
+        }
+    }
 }

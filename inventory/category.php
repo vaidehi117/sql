@@ -92,11 +92,23 @@ class Category
         return $result;
     }
     function removeCategory()
-   {
-       $db = getDB();
-       $query = "DELETE FROM categories WHERE categoryID = $this->categoryID";
-       $result = $db->query($query);
-       $db->close();
-       return $result;
-   }
+    {
+        $db = getDB();
+        $query = "DELETE FROM categories WHERE categoryID = $this->categoryID";
+        $result = $db->query($query);
+        $db->close();
+        return $result;
+    }
+    static function getTotalCategories()
+    {
+        $db = getDB();
+        $query = "SELECT count(categoryID) FROM categories";
+        $result = $db->query($query);
+        $row = $result->fetch_array();
+        if ($row) {
+            return $row[0];
+        } else {
+            return NULL;
+        }
+    }
 }
